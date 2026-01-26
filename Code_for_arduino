@@ -1,0 +1,79 @@
+#include <Servo.h>
+#include <LiquidCrystal.h>
+
+Servo myservo;
+LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
+// Pin Definitions
+const int buttonYes = 2; // Button 1
+const int buttonNo  = 3; // Button 2
+
+
+void setup() {
+  
+  lcd.begin(16,2);
+  pinMode(buttonYes, INPUT_PULLUP);
+  pinMode(buttonNo, INPUT_PULLUP);
+  myservo.attach(40);
+  myservo.write(50);// move servos to center position -> 90°
+  
+  Serial.println("System Ready.");
+}
+
+void loop() {
+  // Step 1: Check Homework
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Did you do your");
+  lcd.setCursor(0,1);
+  lcd.print("homework? ");
+  int homeworkResult = waitForInput();
+
+  if (homeworkResult == buttonYes) {
+    // Step 2: Check Chores
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Did you do your");
+    lcd.setCursor(0,1);
+    lcd.print("chores?");
+    int choresResult = waitForInput();
+
+    if (choresResult == buttonYes) {
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Everything done!");
+      lcd.setCursor(0,1);
+      lcd.print("Let's game");
+      myservo.write(170);
+
+      // --- Add your specific Arduino action (like turning on an LED) here ---
+      delay(72000000);
+      myservo.write(90);
+    } else {
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Do your chores!!!");
+      delay(600000);
+    }
+  } else {
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Do your homework!!!");
+    delay(300000);
+  }
+  
+  lcd.print("-----------------------------------");
+}
+
+// Helper function to wait until a button is pressed
+int waitForInput() {
+  while (true) {
+    if (digitalRead(buttonYes) == LOW) {
+      delay(200); // Simple debounce
+      return buttonYes;
+    }
+    if (digitalRead(buttonNo) == LOW) {
+      delay(200); // Simple debounce
+      return buttonNo;
+    }
+  }
+}
