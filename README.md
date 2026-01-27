@@ -6,3 +6,6 @@ You can find the demo at: [https://www.tinkercad.com/things/cw1HHmkV2Yy-to-do-li
 You should use this code for the Arduino mega 2456 in arduinoIDE. You should also install all the librarires necessery if you hacn't done that yet. 
 
 If you want me to add more questions just send a message to me at semmis558@gmail.com.
+
+The code for the Arduino UNO is made with the use of a 4 pin (I2C) lcd (liquicrystal_I2C).
+The code for the Arduino Mega 2456 is made with the use of a 16 pin (HD44780) lcd (liquicrystal).
