@@ -1,0 +1,98 @@
+#include <Servo.h>
+#include <LiquidCrystal_I2C.h>
+
+Servo myservo;
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+//Pin Definitons
+const int buttonYes = 4;
+const int buttonNo = 5;
+
+void setup() {
+  Serial.begin(9600); //Enable the "eyes" of the Arduino
+
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0,0);
+
+  //INPUT_PULLUP: Pin is 5v (HIGH) by default.
+  //You MUST connect the button to GND to make it LOW.
+  pinMode(buttonYes, INPUT_PULLUP);
+  pinMode(buttonNo, INPUT_PULLUP);
+
+  myservo.attach(8);
+  myservo.write(50); //Put here a value that works for your servo
+
+  Serial.println("System Ready.");
+
+}
+
+void loop() {
+  //Step 1: Check homework
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Did you do your");
+  lcd.setCursor(0,1);
+  lcd.print("homework?");
+
+  //Wait for user input
+  int homeworkResult = waitForInput();
+
+  if (homeworkResult == buttonYes) {
+    //Step 2: check chores
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Did you do your");
+    lcd.setCursor(0,1);
+    lcd.print("chores?");
+
+    //Wait for user input
+    int choresResult = waitForInput();
+
+    if (choresResult == buttonYes) {
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Everything done!");
+      lcd.setCursor(0,1);
+      lcd.print("Let's game!");
+      myservo.write(170); //Put here a value that works for your servo
+
+      delay(2000); //Put here how many seconds you want the machine to wait before turning off your power strip times 1000
+      myservo.write(90);
+    }else {
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Do your chores!!!");
+      delay(2000); //Put here how many seconds you need in order to make your chores times 1000
+    }
+  } else {
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Do homework!!!");
+    delay(2000); //Put here how many seconds you need in order to make your homework times 1000
+  }
+}
+
+//Helper function to wait until a button is pressed
+int waitForInput() {
+  Serial.println("Waiting for input...");
+
+  //1. CLEAR previus clicks: Wait until buttons are NOT pressed
+  while (digitalRead(buttonYes) == LOW || digitalRead(buttonNo) == LOW) {
+    delay(10);
+  }
+
+  //2. Wait for NEW press
+  while (true) {
+    if (digitalRead(buttonYes) == LOW) {
+      Serial.println("YES Detected");
+      delay(200); //Debounce
+      return buttonYes;
+    }
+    if (digitalRead(buttonNo) == LOW) {
+      Serial.println("NO Detected");
+      delay(200); //Debounce
+      return buttonNo;
+    }
+  }
+}
