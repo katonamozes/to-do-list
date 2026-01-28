@@ -14,7 +14,7 @@ void setup() {
   pinMode(buttonYes, INPUT_PULLUP);
   pinMode(buttonNo, INPUT_PULLUP);
   myservo.attach(40);
-  myservo.write(50);// move servos to center position -> 90°
+  myservo.write(50); //Put a value here that works for your servo
   
   Serial.println("System Ready.");
 }
@@ -40,25 +40,44 @@ void loop() {
     if (choresResult == buttonYes) {
       lcd.clear();
       lcd.setCursor(0,0);
-      lcd.print("Everything done!");
+      lcd.print("Did you organize");
       lcd.setCursor(0,1);
-      lcd.print("Let's game");
-      myservo.write(170);
+      lcd.print("your desk?");
+      int organizationResult = waitForInput();
+
+      if (organizationResult == buttonYes) {
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Everything done!!!");
+        lcd.setCursor(0,1);
+        lcd.print("Let's game!!!");
+        myservo.write(170); //Put a value here that works for your servo
+        delay(72000000); //Put here how many seconds you want to gaem times 1000
+        myservo.write(90); //Put a value here that works for your servo
+      }
+
+      else{
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Organize your");
+        lcd.setCursor(0,1);
+        lcd.print("desk!!!");
+        delay(300000);//Put here how many seconds you need in order to make organize your desk times 1000
+      }
 
       // --- Add your specific Arduino action (like turning on an LED) here ---
-      delay(72000000);
-      myservo.write(90);
+
     } else {
       lcd.clear();
       lcd.setCursor(0,0);
       lcd.print("Do your chores!!!");
-      delay(600000);
+      delay(600000); //Put here how many seconds you need in order to do your chores times 1000
     }
   } else {
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Do your homework!!!");
-    delay(300000);
+    delay(300000); //Put here how many seconds you need in order to make your homework times 1000
   }
   
   lcd.print("-----------------------------------");
