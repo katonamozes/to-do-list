@@ -52,13 +52,30 @@ void loop() {
     if (choresResult == buttonYes) {
       lcd.clear();
       lcd.setCursor(0,0);
-      lcd.print("Everything done!");
+      lcd.print("Did you organize");
       lcd.setCursor(0,1);
-      lcd.print("Let's game!");
-      myservo.write(170); //Put here a value that works for your servo
+      lcd.print("your desk?");
+      int organizationResult = waitForInput();
 
-      delay(2000); //Put here how many seconds you want the machine to wait before turning off your power strip times 1000
-      myservo.write(90);
+      if (organizationResult == buttonYes) {
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Everything done!!!");
+        lcd.setCursor(0,1);
+        lcd.print("Let's game!!!");
+        myservo.write(170); //Put here a value that works for your servo
+        delay(72000000); //Put here how much time you want to spend gaming
+        myservo.write(90); //Put here a value that works for your servo
+      }
+
+      else{
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Organize your");
+        lcd.setCursor(0,1);
+        lcd.print("desk!!!");
+        delay(300000);//Put here how many seconds you need in order to organize your desk times 1000
+      }
     }else {
       lcd.clear();
       lcd.setCursor(0,0);
